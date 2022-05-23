@@ -56,7 +56,6 @@ def drawField():
         myBall.drawBall()
         myBall.setMap()
     pygame.display.update()
-    #print(ballsMap)
 drawField()
 
 def redrawField():
@@ -67,10 +66,7 @@ def redrawField():
             if color == (255, 0, 0) or color == (0, 255, 0) or color == (0, 0, 255):
                 centerPosX = ((j+1)*50)-25
                 centerPosY = ((i+1)*50)-25
-                #pygame.draw.rect(screen, color, ballsMap.index(row), row.index(color))
-                #print(centerPosX, centerPosY)
                 pygame.draw.circle(screen, color, center=(centerPosX, centerPosY), radius=20)
-    #print(ballsMap)
     pygame.display.update()
 
 def moveBall(posFrom, posTo):
