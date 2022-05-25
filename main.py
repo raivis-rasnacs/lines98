@@ -1,4 +1,3 @@
-from itertools import filterfalse
 import pygame
 import random
 
@@ -9,7 +8,6 @@ screen = pygame.display.set_mode([400,400])
 colors = [(255, 0, 0),(0, 255, 0),(0, 0, 255)]
 
 numOfBalls = 13
-balls = []
 gameOver = False
 ballSelected = False
 
@@ -25,13 +23,19 @@ ballsMap = [
 ]
 
 class Ball():
-    def __init__(self):
-        self.row = random.randrange(0, 8)
-        self.position = random.randrange(0, 8)
-        while ballsMap[self.row][self.position] != "":
+    def __init__(self, **params):
+        if len(params) > 0:
+            self.position = ((params["x"]+25)/50)-1
+            self.row = ((params["y"]+25)/50)-1
+            self.color = params["color"]
+        else:
             self.row = random.randrange(0, 8)
             self.position = random.randrange(0, 8)
-        self.color = random.choice(colors)
+            while ballsMap[self.row][self.position] != "":
+                self.row = random.randrange(0, 8)
+                self.position = random.randrange(0, 8)
+            self.color = random.choice(colors)
+        self.drawBall()
 
     def drawBall(self):
         centerPosX = ((self.position+1)*50)-25
@@ -52,8 +56,7 @@ def drawField():
     drawLines()
     for i in range(numOfBalls):
         myBall = Ball()
-        balls.append(myBall)
-        myBall.drawBall()
+        #myBall.drawBall()
         myBall.setMap()
     pygame.display.update()
 drawField()
@@ -66,7 +69,8 @@ def redrawField():
             if color == (255, 0, 0) or color == (0, 255, 0) or color == (0, 0, 255):
                 centerPosX = ((j+1)*50)-25
                 centerPosY = ((i+1)*50)-25
-                pygame.draw.circle(screen, color, center=(centerPosX, centerPosY), radius=20)
+                myBall = Ball(color=color, x=centerPosX, y=centerPosY)
+                #myBall.drawBall()
     pygame.display.update()
 
 def moveBall(posFrom, posTo):
@@ -92,7 +96,6 @@ def checkForFives():
                 if ballsMap[j][i] == ballsMap[j+1][i] == ballsMap[j+2][i] == ballsMap[j+3][i] == ballsMap[j+4][i] == color:
                     ballsMap[j][i] = ballsMap[j+1][i] = ballsMap[j+2][i] = ballsMap[j+3][i] = ballsMap[j+4][i] = ""
                     break
-
     redrawField()
 
 while gameOver == False:
