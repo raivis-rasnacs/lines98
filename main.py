@@ -7,7 +7,7 @@ screen = pygame.display.set_mode([400,400])
 
 colors = [(255, 0, 0),(0, 255, 0),(0, 0, 255)]
 
-numOfBalls = 13
+numOfBalls = 40
 gameOver = False
 ballSelected = False
 
@@ -77,6 +77,8 @@ def moveBall(posFrom, posTo):
     if checkForFives() == False:
         moreBalls(3)
     redrawField()
+    printField()
+    isFieldFull()
 
 def moreBalls(amount):
     freeSpaces = []
@@ -86,6 +88,10 @@ def moreBalls(amount):
                 freeSpaces.append((i, j))
 
     freeSpacesToFill = []
+
+    if len(freeSpaces) < 3:
+        amount = len(freeSpaces)
+
     for i in range(amount):
         space = random.choice(freeSpaces)
         freeSpacesToFill.append(space)
@@ -110,16 +116,26 @@ def checkForFives():
                 if ballsMap[j][i] == ballsMap[j+1][i] == ballsMap[j+2][i] == ballsMap[j+3][i] == ballsMap[j+4][i] == color:
                     ballsMap[j][i] = ballsMap[j+1][i] = ballsMap[j+2][i] = ballsMap[j+3][i] = ballsMap[j+4][i] = ""
                     return True
-                
+  
     return False
 
 def isFieldFull():
+    global gameOver
+    breakFlag = False
     for row in ballsMap:
         for ball in row:
             if ball == "":
+                breakFlag = True
                 break
-            else:
-                gameOver = True
+        if breakFlag == True:
+            break
+    else:
+        gameOver = True
+        pygame.quit()
+
+def printField():
+    for x in ballsMap:
+        print(x)
 
 while gameOver == False:
     for event in pygame.event.get():
@@ -140,5 +156,3 @@ while gameOver == False:
                     posFrom = (row, pos)
                 else:
                     ballSelected = False
-
-pygame.QUIT
