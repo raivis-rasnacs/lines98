@@ -35,12 +35,12 @@ class Ball():
                 self.row = random.randrange(0, 8)
                 self.position = random.randrange(0, 8)
             self.color = random.choice(colors)
+            self.setMap()
         self.drawBall()
 
     def drawBall(self):
         centerPosX = ((self.position+1)*50)-25
         centerPosY = ((self.row+1)*50)-25
-        print(centerPosX, centerPosY)
         pygame.draw.circle(screen, self.color, center=(centerPosX, centerPosY), radius=20)
 
     def setMap(self):
@@ -55,9 +55,7 @@ def drawLines():
 def drawField():
     drawLines()
     for i in range(numOfBalls):
-        myBall = Ball()
-        #myBall.drawBall()
-        myBall.setMap()
+        Ball()
     pygame.display.update()
 drawField()
 
@@ -69,16 +67,32 @@ def redrawField():
             if color == (255, 0, 0) or color == (0, 255, 0) or color == (0, 0, 255):
                 centerPosX = ((j+1)*50)-25
                 centerPosY = ((i+1)*50)-25
-                myBall = Ball(color=color, x=centerPosX, y=centerPosY)
-                #myBall.drawBall()
+                Ball(color=color, x=centerPosX, y=centerPosY)
     pygame.display.update()
 
 def moveBall(posFrom, posTo):
-    print(posTo)
     color = ballsMap[posFrom[0]][posFrom[1]]
     ballsMap[posFrom[0]][posFrom[1]] = ""
     ballsMap[posTo[0]][posTo[1]] = color
-    checkForFives()
+    if checkForFives() == False:
+        moreBalls(3)
+    redrawField()
+
+def moreBalls(amount):
+    freeSpaces = []
+    for i, row in enumerate(ballsMap):
+        for j, ball in enumerate(row):
+            if ball == "":
+                freeSpaces.append((i, j))
+
+    freeSpacesToFill = []
+    for i in range(amount):
+        space = random.choice(freeSpaces)
+        freeSpacesToFill.append(space)
+        freeSpaces.remove(space)
+
+    for space in freeSpacesToFill:
+        ballsMap[space[0]][space[1]] = random.choice(colors)
 
 def checkForFives():
     # CHECKS ROWS
@@ -87,7 +101,7 @@ def checkForFives():
             for color in colors:
                 if row[j] == row[j+1] == row[j+2] == row[j+3] == row[j+4] == color:
                     row[j] = row[j+1] = row[j+2] = row[j+3] = row[j+4] = ""
-                    break
+                    return True
 
     # CHECKS COLUMNS
     for i in range(8):
@@ -95,8 +109,17 @@ def checkForFives():
             for color in colors:
                 if ballsMap[j][i] == ballsMap[j+1][i] == ballsMap[j+2][i] == ballsMap[j+3][i] == ballsMap[j+4][i] == color:
                     ballsMap[j][i] = ballsMap[j+1][i] = ballsMap[j+2][i] = ballsMap[j+3][i] = ballsMap[j+4][i] = ""
-                    break
-    redrawField()
+                    return True
+                
+    return False
+
+def isFieldFull():
+    for row in ballsMap:
+        for ball in row:
+            if ball == "":
+                break
+            else:
+                gameOver = True
 
 while gameOver == False:
     for event in pygame.event.get():
@@ -115,7 +138,6 @@ while gameOver == False:
                 if ballsMap[row][pos] != "":
                     ballSelected = True
                     posFrom = (row, pos)
-                    print(posFrom)
                 else:
                     ballSelected = False
 
