@@ -7,7 +7,7 @@ screen = pygame.display.set_mode([400,400])
 
 colors = [(255, 0, 0),(0, 255, 0),(0, 0, 255)]
 
-numOfBalls = 40
+numOfBalls = 20
 gameOver = False
 ballSelected = False
 
@@ -77,7 +77,6 @@ def moveBall(posFrom, posTo):
     if checkForFives() == False:
         moreBalls(3)
     redrawField()
-    printField()
     isFieldFull()
 
 def moreBalls(amount):
@@ -132,10 +131,6 @@ def isFieldFull():
     else:
         gameOver = True
         pygame.quit()
-
-def printField():
-    for x in ballsMap:
-        print(x)
 
 while gameOver == False:
     for event in pygame.event.get():
