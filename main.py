@@ -8,7 +8,7 @@ screen = pygame.display.set_mode([400,400])
 
 colors = [(255, 0, 0),(0, 255, 0),(0, 0, 255)]
 
-numOfBalls = 10
+numOfBalls = 13
 balls = []
 gameOver = False
 ballSelected = False
@@ -72,13 +72,27 @@ def redrawField():
 def moveBall(posFrom, posTo):
     print(posTo)
     color = ballsMap[posFrom[0]][posFrom[1]]
-    for x in ballsMap:
-        print(x)
     ballsMap[posFrom[0]][posFrom[1]] = ""
     ballsMap[posTo[0]][posTo[1]] = color
-    print("")
-    for x in ballsMap:
-        print(x)
+    checkForFives()
+
+def checkForFives():
+    # CHECKS ROWS
+    for i, row in enumerate(ballsMap):
+        for j in range(4):
+            for color in colors:
+                if row[j] == row[j+1] == row[j+2] == row[j+3] == row[j+4] == color:
+                    row[j] = row[j+1] = row[j+2] = row[j+3] = row[j+4] = ""
+                    break
+
+    # CHECKS COLUMNS
+    for i in range(8):
+        for j in range(4):
+            for color in colors:
+                if ballsMap[j][i] == ballsMap[j+1][i] == ballsMap[j+2][i] == ballsMap[j+3][i] == ballsMap[j+4][i] == color:
+                    ballsMap[j][i] = ballsMap[j+1][i] = ballsMap[j+2][i] = ballsMap[j+3][i] = ballsMap[j+4][i] = ""
+                    break
+
     redrawField()
 
 while gameOver == False:
