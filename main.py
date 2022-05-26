@@ -98,7 +98,7 @@ def moreBalls(amount):
 
     for space in freeSpacesToFill:
         ballsMap[space[0]][space[1]] = random.choice(colors)
-
+"""
 def checkForFives():
     # CHECKS ROWS
     for i, row in enumerate(ballsMap):
@@ -117,6 +117,44 @@ def checkForFives():
                     return True
   
     return False
+"""
+
+def checkForFives():
+    
+    def updateMap():
+        for each in fiveInRow:
+            ballsMap[each[0]][each[1]] = ""
+    
+    # CHECKS ROWS
+    for i, row in enumerate(ballsMap):
+        if row.count("") > 3:
+            continue
+        
+        fiveInRow = []
+        for j, ball in enumerate(row):
+            if ball != "" and not j > 3:
+                previousColor = ball
+                fiveInRow.append((i, j))
+                firstBallIndex = j
+                break
+        else:
+            continue
+
+        for k in range(firstBallIndex+1, 8):
+            if row[k] == previousColor:
+                fiveInRow.append((i, k))
+                if k == 7 and len(fiveInRow) >= 5:
+                    updateMap()
+                    fiveInRow = []
+            else:
+                if len(fiveInRow) >= 5:
+                    print(fiveInRow)
+                    updateMap()
+                fiveInRow = []
+            if row[k] != "":
+                previousColor = row[k]
+        print(i)
+
 
 def isFieldFull():
     global gameOver
