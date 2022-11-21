@@ -7,7 +7,7 @@ screen = pygame.display.set_mode([400,400])
 
 colors = [(255, 0, 0),(0, 255, 0),(0, 0, 255)]
 
-numOfBalls = 20
+numOfBalls = 15
 gameOver = False
 ballSelected = False
 
@@ -21,6 +21,7 @@ ballsMap = [
     ["", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", ""],
 ]
+
 
 class Ball():
     def __init__(self, **params):
@@ -47,6 +48,7 @@ class Ball():
         global ballsMap
         ballsMap[self.row][self.position] = self.color
 
+
 def newGame():
     global drawLines
     def drawLines():
@@ -62,6 +64,7 @@ def newGame():
     drawField()
 newGame()
 
+
 def redrawField():
     screen.fill((0, 0, 0))
     drawLines()
@@ -73,6 +76,7 @@ def redrawField():
                 Ball(color=color, x=centerPosX, y=centerPosY)
     pygame.display.update()
 
+
 def moveBall(posFrom, posTo):
     color = ballsMap[posFrom[0]][posFrom[1]]
     ballsMap[posFrom[0]][posFrom[1]] = ""
@@ -81,6 +85,7 @@ def moveBall(posFrom, posTo):
         moreBalls(3)
     redrawField()
     isFieldFull()
+
 
 def moreBalls(amount):
     freeSpaces = []
@@ -102,8 +107,11 @@ def moreBalls(amount):
     for space in freeSpacesToFill:
         ballsMap[space[0]][space[1]] = random.choice(colors)
 
+
 def checkForFives():
-    
+
+    # FIXME: Refactoring needed
+
     def updateMap(direction):
         if direction == "horizontally":
             for each in fiveInRow:
@@ -193,6 +201,9 @@ def checkForFives():
                 previousColor = row[k]
             else:
                 previousColor = "none"
+    else:
+        moreBalls(3)
+        
 
 def isFieldFull():
     global gameOver
@@ -211,7 +222,9 @@ def isFieldFull():
 # EVENT LOOP
 while gameOver == False:
     for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.QUIT:
+            pygame.quit()
+        elif event.type == pygame.MOUSEBUTTONUP:
             clickPos = pygame.mouse.get_pos()
             pos = clickPos[0]//50
             row = clickPos[1]//50
