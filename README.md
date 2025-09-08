@@ -1,6 +1,7 @@
 SUPER EPIC BALL GAME
 
 How to play:
+
  1.click with left click on any ball you like
  2.choose empty space
  3.click on the empty space
