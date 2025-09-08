@@ -14,3 +14,4 @@ How do you play? -
     After moving the ball new balls appear on the playing grid.
     To remove balls you have to make rows/collums of the same color balls.
     Games target is to move the balls to create rows/collums to not fill the playing grid.
+=======
