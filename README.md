@@ -6,6 +6,12 @@ Unfortunately, nobody made a guide about how to play. Can you?
 
 ---
 
+How to play:
+1. Click on a ball to select it.
+2. Click on an empty tile, to move the ball to that tile.
+3. Vertical and horizontal rows of 5 or more same coloured balls get destroyed.
+4. New balls are spawned every move, so when all tiles are occupied, you lose.
+=======
 How do you play? - 
     When the game starts there is a playing grid with randomly generated balls.
     The balls can be any of the three colors - green, red or blue.
