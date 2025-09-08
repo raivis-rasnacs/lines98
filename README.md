@@ -7,3 +7,8 @@ Unfortunately, nobody made a guide about how to play. Can you?
 ---
 
 Write short guide here to walk through gaming process...
+
+**teksts**
+
+- funkcija
+- funkcija
